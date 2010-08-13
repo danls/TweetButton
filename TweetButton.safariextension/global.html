@@ -6,7 +6,8 @@ safari.application.addEventListener("command", performCommand, false);
 safari.application.addEventListener("validate", validateCommand, false);
 
 function urlencode(str) {
-	return escape(str).replace(/\+/g,'%2B').replace(/%20/g, '+').replace(/\*/g, '%2A').replace(/\//g, '%2F').replace(/@/g, '%40');
+	str = (str+'').toString();
+	return encodeURIComponent(str).replace(/!/g, '%21').replace(/'/g, '%27').replace(/\(/g, '%28').replace(/\)/g, '%29').replace(/\*/g, '%2A').replace(/%20/g, '+');
 }
 
 function performCommand(event) {
