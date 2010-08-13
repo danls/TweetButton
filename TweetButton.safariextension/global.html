@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<script>
+
+// Register event listeners
+safari.application.addEventListener("command", performCommand, false);
+safari.application.addEventListener("validate", validateCommand, false);
+
+function urlencode(str) {
+	return escape(str).replace(/\+/g,'%2B').replace(/%20/g, '+').replace(/\*/g, '%2A').replace(/\//g, '%2F').replace(/@/g, '%40');
+}
+
+function performCommand(event) {
+
+	if (event.command !== "pressTweet")
+		return;
+
+	console.log("tweetButton");
+	var currentURL = event.target.browserWindow.activeTab.url;
+	var currentTitle = event.target.browserWindow.activeTab.title;
+	if (currentURL) {
+		// safari.application.activeBrowserWindow.activeTab.page.dispatchMessage("do-tweet", true);
+		// Formulate twitter share url
+		currentURL = "http://twitter.com/share?url=" + urlencode(currentURL) + "&related=danls&text=" + urlencode(currentTitle);
+		
+		safari.application.activeBrowserWindow.openTab().url = currentURL;
+	
+		/*
+		window.resizeTo(200,200);
+		var tweetWindow = safari.application.openBrowserWindow();
+		tweetWindow.activeTab.url = currentURL;
+		*/
+		
+		// var activeWindow = safari.application.activeBrowserWindow;
+		// window.resizeTo(200,200);
+		// activeWindow.width(200);
+		// window.open(currentURL,'tweetButtonWindow','width=400,height=200');
+		// event.target.browserWindow.activeTab.url = currentURL;
+		// console.log("tweeting: " + currentURL);
+		// safari.application.activeBrowserWindow.activeTab.page.dispatchMessage("show toolbar", true);
+	}
+}
+ 
+function validateCommand(event) {
+
+	if (event.command !== "pressTweet")
+		return;
+
+	// Disable the button if there is no URL loaded in the tab.
+	event.target.disabled = !event.target.browserWindow.activeTab.url;	
+
+}
+
+
+
+</script>
